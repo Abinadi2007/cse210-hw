@@ -12,7 +12,15 @@ class Program
         {
             Console.Write("Enter a number (0 to quit): ");
             string userResponse = Console.ReadLine();
-            userNumber = int.Parse(userResponse);
+
+            // Try to parse the user input safely
+            bool isValidNumber = int.TryParse(userResponse, out userNumber);
+            
+            if (!isValidNumber)
+            {
+                Console.WriteLine("Please enter a valid number.");
+                continue;  // Ask for input again
+            }
 
             if (userNumber != 0)
             {
@@ -20,53 +28,62 @@ class Program
             }
         }
 
-        int sum = 0;
-        foreach (int number in numbers)
+        if (numbers.Count > 0)
         {
-            sum += number;
-        }
-
-        Console.WriteLine($"The sum is: {sum}");
-
-        float average = ((float)sum) / numbers.Count;
-        Console.WriteLine($"The average is: {average}");
-
-        int max = numbers[0];
-        foreach (int number in numbers)
-        {
-            if (number > max)
+            // Calculate the sum
+            int sum = 0;
+            foreach (int number in numbers)
             {
-                max = number;
+                sum += number;
             }
-        }
 
-        Console.WriteLine($"The max is: {max}");
+            Console.WriteLine($"The sum is: {sum}");
 
-        // Stretch Challenge
-        int smallestPositive = int.MaxValue;
-        foreach (int number in numbers)
-        {
-            if (number > 0 && number < smallestPositive)
+            // Calculate the average
+            float average = ((float)sum) / numbers.Count;
+            Console.WriteLine($"The average is: {average}");
+
+            // Find the maximum number
+            int max = numbers[0];
+            foreach (int number in numbers)
             {
-                smallestPositive = number;
+                if (number > max)
+                {
+                    max = number;
+                }
             }
-        }
+            Console.WriteLine($"The max is: {max}");
 
-        if (smallestPositive == int.MaxValue)
-        {
-            Console.WriteLine("There are no positive numbers.");
+            // Find the smallest positive number (closest to zero)
+            int smallestPositive = int.MaxValue;
+            foreach (int number in numbers)
+            {
+                if (number > 0 && number < smallestPositive)
+                {
+                    smallestPositive = number;
+                }
+            }
+
+            if (smallestPositive == int.MaxValue)
+            {
+                Console.WriteLine("There are no positive numbers.");
+            }
+            else
+            {
+                Console.WriteLine($"The smallest positive number is: {smallestPositive}");
+            }
+
+            // Sort the list and display the sorted numbers
+            numbers.Sort();
+            Console.WriteLine("The sorted list is:");
+            foreach (int number in numbers)
+            {
+                Console.WriteLine(number);
+            }
         }
         else
         {
-            Console.WriteLine($"The smallest positive number is: {smallestPositive}");
-        }
-
-        // Stretch Challenge 
-        numbers.Sort();
-        Console.WriteLine("The sorted list is:");
-        foreach (int number in numbers)
-        {
-            Console.WriteLine(number);
+            Console.WriteLine("No numbers were entered.");
         }
     }
 }
